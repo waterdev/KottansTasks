@@ -1,0 +1,6 @@
+D:\C#\KottansTasks\CreditCardTests\bin\Debug\CreditCardTests.dll
+D:\C#\KottansTasks\CreditCardTests\bin\Debug\CreditCardTests.pdb
+D:\C#\KottansTasks\CreditCardTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+D:\C#\KottansTasks\CreditCardTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
+D:\C#\KottansTasks\CreditCardTests\obj\Debug\CreditCardTests.dll
+D:\C#\KottansTasks\CreditCardTests\obj\Debug\CreditCardTests.pdb
