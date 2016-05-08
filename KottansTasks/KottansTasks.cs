@@ -14,12 +14,17 @@ namespace KottansTasks
             //Remove all whitespaces
             cardNumber = new string(cardNumber.Where(c => !char.IsWhiteSpace(c)).ToArray());
 
+
+            //Validate card before getting vendor
+            if (!(IsCreditCardNumberValid(cardNumber)))
+                return "Unknown";
+
             //Create Regex check patterns
             Regex visaRgx = new Regex("^4[0-9]{6,}$");
             Regex masterCardRgx = new Regex("^5[1-5][0-9]{5,}$");
             Regex jcbRgx = new Regex("^(?:2131|1800|35[0-9]{3})[0-9]{3,}$");
             Regex americanExpressRgx = new Regex("^3[47][0-9]{5,}$");
-            Regex maestroRgx = new Regex(@"(?:5018|5020|5038|5612|5893|6304|6759|6761|6762|6763|0604|6390)[0-9]{8,15}");
+            Regex maestroRgx = new Regex(@"^(5[06-8]|6\d)\d{14}(\d{ 2,3})?$");
 
             //Check all patterns
             if (visaRgx.IsMatch(cardNumber))
@@ -29,15 +34,13 @@ namespace KottansTasks
             else if (jcbRgx.IsMatch(cardNumber))
                 return "JCB";
             else if (americanExpressRgx.IsMatch(cardNumber))
-                return "AMERICAN EXPRESS";
+                return "American Express";
             else if (maestroRgx.IsMatch(cardNumber))
                 return "Maestro";
 
 
             return "Unknown";
         }
-
-
 
         public static bool IsCreditCardNumberValid(string cardNumber)
         {
@@ -52,18 +55,27 @@ namespace KottansTasks
             return sumOfDigits % 10 == 0;        
         }
 
-        public static int GenerateNextCreditCardNumber(string cardNumber)
+        public static string GenerateNextCreditCardNumber(string cardNumber)
         {
-            //check if all symbols are numbers
-            cardNumber = new string(cardNumber.Where(x => Char.IsNumber(x)).Reverse().ToArray());
+            string vendor = GetCreditCardVendor(cardNumber);
+            long newcard = 0;
 
-            //for every even index  multiply symbol by 2
-            int sumOfDigits = cardNumber
-                    .Select((e, i) => ((int)e - '0') * (i % 2 != 0 ? 1 : 2)) //e-48 or -'0' is a cast to int 
-                    .Sum((e) => e / 10 + e % 10);
+            if (vendor == "Unknown")
+                throw new ArgumentException("Unknown vendor of the card!");
 
-            //get the next number of checksum
-            return (10 - (sumOfDigits % 10));
+
+
+            newcard = Int64.Parse(cardNumber);
+            do
+            {
+                newcard++;
+            } while (!IsCreditCardNumberValid(newcard.ToString()));
+
+
+            if (vendor != GetCreditCardVendor(newcard.ToString()))
+                throw new ArgumentException("No more cards with number bigger than original!");
+            else
+            return newcard.ToString();
         }
     }
 }
