@@ -73,7 +73,7 @@ namespace KottansTasks
 
 
             if (vendor != GetCreditCardVendor(newcard.ToString()))
-                throw new ArgumentException("No more cards with number bigger than original!");
+                throw new ArgumentException("No more cards with number bigger than original! ");
             else
             return newcard.ToString();
         }
